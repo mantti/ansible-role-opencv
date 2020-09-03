@@ -1,0 +1,31 @@
+---
+- block:
+
+# tasks file for ansible-role-opencv
+  - name: Allow all from infiniband
+    iptables:
+      chain: INPUT 
+      in_interface: "{{ ib_interface }}"
+      jump: ACCEPT
+
+  - name: Allow all from internal ethernet
+    iptables:
+      chain: INPUT 
+      in_interface: "{{ internal_interface }}"
+      jump: ACCEPT
+
+  - name: Allow OpenCV proto from linux-ssh
+    iptables:
+      chain: INPUT 
+      in_interface: "{{ opencv_interface }}"
+      src_range: "{{ linux_ssh }}"
+      jump: ACCEPT
+
+  - name: Drop everything else from opencv-interface
+    iptables:
+      chain: INPUT 
+      in_interface: "{{ opencv_interface }}"
+      jump: DROP
+
+
+  when: "'opencv_nodes' in group_names"
