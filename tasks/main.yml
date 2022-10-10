@@ -19,7 +19,7 @@
       chain: INPUT 
       in_interface: "{{ opencv_interface }}"
       src_range: "{{ linux_ssh }}"
-      jump: ACCEPT
+      jump: DROP
 
   - name: Drop everything else from opencv-interface
     iptables:
